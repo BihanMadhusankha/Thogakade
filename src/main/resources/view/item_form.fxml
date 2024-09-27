@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="591.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemFormController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#192a56" height="97.0" stroke="BLACK" strokeType="INSIDE" width="762.0" />
+      <Label layoutX="340.0" layoutY="26.0" text="Item Form" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="38.0" layoutY="122.0" text="Item Code :">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtItemCode" layoutX="136.0" layoutY="119.0" prefHeight="26.0" prefWidth="191.0" />
+      <Label layoutX="390.0" layoutY="122.0" text="Description :">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtDescription" layoutX="488.0" layoutY="119.0" prefHeight="26.0" prefWidth="216.0" />
+      <Label layoutX="38.0" layoutY="166.0" text="Pack Size :">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtPackSize" layoutX="136.0" layoutY="163.0" prefHeight="26.0" prefWidth="191.0" />
+      <Label layoutX="390.0" layoutY="166.0" text="Unit Price :">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtUnitPrice" layoutX="488.0" layoutY="163.0" prefHeight="26.0" prefWidth="216.0" />
+      <Label layoutX="38.0" layoutY="216.0" text="Qty On Hand :">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtQtyOnHand" layoutX="136.0" layoutY="213.0" prefHeight="26.0" prefWidth="191.0" />
+      <TableView fx:id="tblItem" layoutX="36.0" layoutY="266.0" prefHeight="259.0" prefWidth="682.0">
+        <columns>
+          <TableColumn fx:id="colItemCode" prefWidth="108.79999542236328" text="Item Code" />
+          <TableColumn fx:id="colDescription" prefWidth="218.39996337890625" text="Description" />
+            <TableColumn fx:id="colPackSize" prefWidth="115.99993896484375" text="Pack Size" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="117.59994506835938" text="Unit Price" />
+            <TableColumn fx:id="colQtyOnHand" prefWidth="121.5999755859375" text="Qty On Hand" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnAddItem" layoutX="414.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionAddItem" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: #4cd137;" text="Add" />
+      <Button fx:id="btnUpdateItem" layoutX="480.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionUpdateItem" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #0097e6;" text="Update" />
+      <Button fx:id="btnDeleteItem" layoutX="561.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionDeleteItem" prefHeight="26.0" prefWidth="69.0" style="-fx-background-color: #e84118;" text="Delete" />
+      <Button fx:id="btnSearchItem" layoutX="638.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionSearchItem" prefHeight="26.0" prefWidth="76.0" style="-fx-background-color: #e1b12c;" text="Search" />
+   </children>
+</AnchorPane>
