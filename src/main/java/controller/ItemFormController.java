@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Item;
+import util.CrudUtil;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -73,16 +74,17 @@ public class ItemFormController implements Initializable {
                 Integer.parseInt(txtQtyOnHand.getText())
                 );
 
-        String SQL = "INSERT INTO item VALUES(?,?,?,?,?)";
-        try {
-            PreparedStatement psTm = DBConnection.getInstance().getConnection().prepareStatement(SQL);
-            psTm.setObject(1,item.getItemCode());
-            psTm.setObject(2,item.getDescription());
-            psTm.setObject(3,item.getPackSize());
-            psTm.setObject(4,item.getUnitPrice());
-            psTm.setObject(5,item.getQtyOnHand());
 
-            boolean isItemAdd = psTm.executeUpdate()>0;
+        try {
+
+            boolean isItemAdd = CrudUtil.execute(
+                    "INSERT INTO item VALUES(?,?,?,?,?)",
+                    item.getItemCode(),
+                    item.getDescription(),
+                    item.getPackSize(),
+                    item.getUnitPrice(),
+                    item.getQtyOnHand()
+                    );
             if (isItemAdd){
                 new Alert(Alert.AlertType.INFORMATION,"Items Added :)").show();
                 loadItemTable();
@@ -94,12 +96,13 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void OnActionDeleteItem(ActionEvent event) {
-        String SQL = "DELETE FROM item WHERE ItemCode= ?";
-        try {
-            PreparedStatement psTm = DBConnection.getInstance().getConnection().prepareStatement(SQL);
-            psTm.setObject(1,txtItemCode.getText());
 
-            boolean isDelete = psTm.executeUpdate()>0;
+        try {
+
+            boolean isDelete = CrudUtil.execute(
+                    "DELETE FROM item WHERE ItemCode= ?",
+                    txtItemCode.getText()
+            );
             if (isDelete){
                 new Alert(Alert.AlertType.INFORMATION,"Deleted Item ").show();
                 loadItemTable();
@@ -111,11 +114,13 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void OnActionSearchItem(ActionEvent event) {
-        String SQL = "SELECT * FROM item WHERE ItemCode= ?";
+
         try {
-            PreparedStatement psTm = DBConnection.getInstance().getConnection().prepareStatement(SQL);
-            psTm.setObject(1,txtItemCode.getText());
-            ResultSet resultSet = psTm.executeQuery();
+
+            ResultSet resultSet = CrudUtil.execute(
+                    "SELECT * FROM item WHERE ItemCode= ?",
+                    txtItemCode.getText()
+                    );
             resultSet.next();
             Item item = new Item(
                     resultSet.getString(1),
@@ -139,16 +144,17 @@ public class ItemFormController implements Initializable {
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQtyOnHand.getText())
         );
-        String SQL = "UPDATE item SET Description=?,PackSize=?,UnitPrice=?,QtyOnHand=? WHERE ItemCode=?";
-        try {
-            PreparedStatement psTm = DBConnection.getInstance().getConnection().prepareStatement(SQL);
-            psTm.setObject(1,item.getDescription());
-            psTm.setObject(2,item.getPackSize());
-            psTm.setObject(3,item.getUnitPrice());
-            psTm.setObject(4,item.getQtyOnHand());
-            psTm.setObject(5,item.getItemCode());
 
-            boolean isUpdate = psTm.executeUpdate()>0;
+        try {
+
+            boolean isUpdate = CrudUtil.execute(
+                    "UPDATE item SET Description=?,PackSize=?,UnitPrice=?,QtyOnHand=? WHERE ItemCode=?",
+                    item.getDescription(),
+                    item.getPackSize(),
+                    item.getUnitPrice(),
+                    item.getQtyOnHand(),
+                    item.getItemCode()
+            );
             if (isUpdate){
                 new Alert(Alert.AlertType.INFORMATION,"Updated Item ").show();
                 loadItemTable();
@@ -178,9 +184,9 @@ public class ItemFormController implements Initializable {
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
 
-        String SQL = "SELECT * FROM item";
+
         try {
-            ResultSet resultSet = DBConnection.getInstance().getConnection().createStatement().executeQuery(SQL);
+            ResultSet resultSet = CrudUtil.execute("SELECT * FROM item");
             while (resultSet.next()){
                 Item item = new Item(
                         resultSet.getString("ItemCode"),
