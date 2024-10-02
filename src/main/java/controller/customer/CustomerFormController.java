@@ -5,13 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javafx.stage.Stage;
 import model.Customer;
 import util.CrudUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 
@@ -90,6 +94,7 @@ public class CustomerFormController implements Initializable {
     @FXML
     private TextField txtSalary;
 
+    CustomerService customerService = new CustomerController();
     public CustomerFormController(){}
     @FXML
     void btnOnActionAddCustomer(ActionEvent event) throws SQLException {
@@ -97,25 +102,13 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(txtId.getText(),comBoxTitle.getValue(),txtName.getText(),datrBirthday.getValue(),Double.parseDouble(txtSalary.getText()),
                 txtAddress.getText(),txtCity.getText(),txtProvince.getText(),txtPostalCode.getText());
 
-        try {
-
-            boolean isCustomerAdd = CrudUtil.execute("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)",
-                        customer.getId(),
-                        customer.getTitle(),
-                        customer.getName(),
-                        customer.getDob(),
-                        customer.getSalary(),
-                        customer.getAddress(),
-                        customer.getCity(),
-                        customer.getProvince(),
-                        customer.getPostalCode()
-            );
+            boolean isCustomerAdd = customerService.addCustomer(customer);
 
             if (isCustomerAdd) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer Added :)").show();
                 loadTable();
             }
-        }catch (SQLException e){
+        else{
             new Alert(Alert.AlertType.ERROR, "Customer Not Added :(").show();
 
         }
@@ -124,88 +117,26 @@ public class CustomerFormController implements Initializable {
     @FXML
     void btnOnActionCustomerDelete(ActionEvent event) {
 
-        try {
-           boolean isDelete = CrudUtil.execute(
-                   "DELETE FROM customer WHERE CustID=?",
-                   txtId.getText()
-           );
+           boolean isDelete = customerService.deleteCustomer(txtId.getText());
+
            if (isDelete){
                new Alert(Alert.AlertType.INFORMATION, "Customer Deleted :)").show();
                loadTable();
            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Customer Not Deleted :(").show();
-        }
+           else {
+                new Alert(Alert.AlertType.ERROR, "Customer Not Deleted :(").show();
+            }
     }
 
     @FXML
     void btnOnActionCustomerSearch(ActionEvent event) {
 
-        try {
-
-            ResultSet resultSet =CrudUtil.execute("SELECT * FROM customer WHERE CustID=?",txtId.getText());;
-
-                resultSet.next();
-               Customer customer = new Customer(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getDate(4).toLocalDate(),
-                        resultSet.getDouble(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        resultSet.getString(9)
-                );
-               setValueToText(customer);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+               setValueToText(customerService.searchCustomer(txtId.getText()));
 
     }
 
     void loadTable(){
-        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList();
-
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colBirthday.setCellValueFactory(new PropertyValueFactory<>("dob"));
-        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-        colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
-        try {
-
-            String SQL ="SELECT * FROM customer";
-
-            ResultSet resultSet = CrudUtil.execute(SQL);
-
-            while (resultSet.next()){
-                Customer customer = new Customer(
-                        resultSet.getString("CustID"),
-                        resultSet.getString("CustTitle"),
-                        resultSet.getString("CustName"),
-                        resultSet.getDate("dob").toLocalDate(),
-                        resultSet.getDouble("salary"),
-                        resultSet.getString("CustAddress"),
-                        resultSet.getString("city"),
-                        resultSet.getString("province"),
-                        resultSet.getString("postalCode")
-                );
-                customerObservableList.add(customer);
-            }
-
-            tblCustomerForm.setItems(customerObservableList);
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
+        tblCustomerForm.setItems(customerService.getAllCustomer());
     }
 
     @FXML
@@ -213,28 +144,14 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(txtId.getText(),comBoxTitle.getValue(),txtName.getText(),datrBirthday.getValue(),Double.parseDouble(txtSalary.getText()),
                 txtAddress.getText(),txtCity.getText(),txtProvince.getText(),txtPostalCode.getText());
 
-        try {
-
-            boolean isUpdate = CrudUtil.execute(
-                    "UPDATE customer SET CustTitle=?,CustName=?,DOB =?,salary =?,CustAddress = ?, City = ? ,Province =?, PostalCode = ? WHERE CustID = ?",
-                    customer.getTitle(),
-                    customer.getName(),
-                    customer.getDob(),
-                    customer.getSalary(),
-                    customer.getAddress(),
-                    customer.getCity(),
-                    customer.getProvince(),
-                    customer.getPostalCode(),
-                    customer.getId()
-            ) ;
+            boolean isUpdate = customerService.updateCustomer(customer);
             if (isUpdate){
                 new  Alert(Alert.AlertType.INFORMATION,"Customer Updated !").show();
                 loadTable();
             }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,"Customer Not Updated !").show();
-        }
+            else {
+                new Alert(Alert.AlertType.ERROR,"Customer Not Updated !").show();
+            }
     }
 
     @Override
@@ -245,6 +162,17 @@ public class CustomerFormController implements Initializable {
         customerTitleList.add("Miss");
         customerTitleList.add("Ms");
         comBoxTitle.setItems(customerTitleList);
+
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colBirthday.setCellValueFactory(new PropertyValueFactory<>("dob"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+        colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
         loadTable();
 
         tblCustomerForm.getSelectionModel().selectedItemProperty().addListener((observableValue, customer, newValue) -> {
@@ -267,6 +195,24 @@ public class CustomerFormController implements Initializable {
     }
 
     public void btnOnActionItemForm(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/item_form.fxml"))));
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+
+    }
+
+    public void OnActionDashBoardBtn(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/dash_board.fxml"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.show();
     }
 }

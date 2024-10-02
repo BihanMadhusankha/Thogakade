@@ -4,12 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Item;
 import util.CrudUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,6 +66,7 @@ public class ItemFormController implements Initializable {
     @FXML
     private TextField txtUnitPrice;
 
+    ItemServices itemController = new ItemController();
     @FXML
     void OnActionAddItem(ActionEvent event) {
         Item item = new Item(
@@ -70,67 +75,34 @@ public class ItemFormController implements Initializable {
                 txtPackSize.getText(),
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQtyOnHand.getText())
-                );
-
-
-        try {
-
-            boolean isItemAdd = CrudUtil.execute(
-                    "INSERT INTO item VALUES(?,?,?,?,?)",
-                    item.getItemCode(),
-                    item.getDescription(),
-                    item.getPackSize(),
-                    item.getUnitPrice(),
-                    item.getQtyOnHand()
-                    );
+        );
+            boolean isItemAdd = itemController.addItem(item);
             if (isItemAdd){
                 new Alert(Alert.AlertType.INFORMATION,"Items Added :)").show();
                 loadItemTable();
             }
-        } catch (SQLException e) {
+            else  {
             new Alert(Alert.AlertType.ERROR,"Items not Added :)").show();
-        }
+            }
     }
 
     @FXML
     void OnActionDeleteItem(ActionEvent event) {
 
-        try {
-
-            boolean isDelete = CrudUtil.execute(
-                    "DELETE FROM item WHERE ItemCode= ?",
-                    txtItemCode.getText()
-            );
+            boolean isDelete = itemController.deleteItem( txtItemCode.getText());
             if (isDelete){
                 new Alert(Alert.AlertType.INFORMATION,"Deleted Item ").show();
                 loadItemTable();
             }
-        } catch (SQLException e) {
+            else {
             new Alert(Alert.AlertType.ERROR,"Item Not Deleted :(").show();
-        }
+            }
     }
 
     @FXML
     void OnActionSearchItem(ActionEvent event) {
 
-        try {
-
-            ResultSet resultSet = CrudUtil.execute(
-                    "SELECT * FROM item WHERE ItemCode= ?",
-                    txtItemCode.getText()
-                    );
-            resultSet.next();
-            Item item = new Item(
-                    resultSet.getString(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getDouble(4),
-                    resultSet.getInt(5)
-            );
-            setValueToText(item);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        setValueToText(itemController.searchItem(txtItemCode.getText()));
     }
 
     @FXML
@@ -142,28 +114,24 @@ public class ItemFormController implements Initializable {
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQtyOnHand.getText())
         );
-
-        try {
-
-            boolean isUpdate = CrudUtil.execute(
-                    "UPDATE item SET Description=?,PackSize=?,UnitPrice=?,QtyOnHand=? WHERE ItemCode=?",
-                    item.getDescription(),
-                    item.getPackSize(),
-                    item.getUnitPrice(),
-                    item.getQtyOnHand(),
-                    item.getItemCode()
-            );
+            boolean isUpdate = itemController.updateItem(item);
             if (isUpdate){
                 new Alert(Alert.AlertType.INFORMATION,"Updated Item ").show();
                 loadItemTable();
             }
-        } catch (SQLException e) {
+       else {
             new Alert(Alert.AlertType.ERROR,"Item Not Updated ").show();
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colPackSize.setCellValueFactory(new PropertyValueFactory<>("packSize"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
+
         loadItemTable();
 
         tblItem.getSelectionModel().selectedItemProperty().addListener((observableValue, item, newItemValue) ->  {
@@ -174,31 +142,9 @@ public class ItemFormController implements Initializable {
     }
 
     void loadItemTable(){
-        ObservableList<Item> itemObservableList = FXCollections.observableArrayList();
 
-        colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colPackSize.setCellValueFactory(new PropertyValueFactory<>("packSize"));
-        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
+            tblItem.setItems(itemController.getAllItem());
 
-
-        try {
-            ResultSet resultSet = CrudUtil.execute("SELECT * FROM item");
-            while (resultSet.next()){
-                Item item = new Item(
-                        resultSet.getString("ItemCode"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("PackSize"),
-                        resultSet.getDouble("UnitPrice"),
-                        resultSet.getInt("QtyOnHand")
-                );
-                itemObservableList.add(item);
-            }
-            tblItem.setItems(itemObservableList);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void setValueToText(Item newItemValue){
@@ -209,4 +155,23 @@ public class ItemFormController implements Initializable {
         txtQtyOnHand.setText(newItemValue.getQtyOnHand()+"");
     }
 
+    public void OnActionCustomerForm(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/customer_form.fxml"))));
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void OnActionDashBoardBtn(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/dash_board.fxml"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.show();
+    }
 }

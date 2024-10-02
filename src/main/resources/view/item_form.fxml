@@ -9,7 +9,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="591.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.item.ItemFormController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#192a56" height="97.0" stroke="BLACK" strokeType="INSIDE" width="762.0" />
@@ -61,5 +60,7 @@
       <Button fx:id="btnUpdateItem" layoutX="480.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionUpdateItem" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #0097e6;" text="Update" />
       <Button fx:id="btnDeleteItem" layoutX="561.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionDeleteItem" prefHeight="26.0" prefWidth="69.0" style="-fx-background-color: #e84118;" text="Delete" />
       <Button fx:id="btnSearchItem" layoutX="638.0" layoutY="227.0" mnemonicParsing="false" onAction="#OnActionSearchItem" prefHeight="26.0" prefWidth="76.0" style="-fx-background-color: #e1b12c;" text="Search" />
+      <Button fx:id="btnCustomerForm" layoutX="232.0" layoutY="540.0" mnemonicParsing="false" onAction="#OnActionCustomerForm" text="Customer Form" />
+      <Button fx:id="btnDashBoard" layoutX="377.0" layoutY="540.0" mnemonicParsing="false" onAction="#OnActionDashBoardBtn" prefHeight="26.0" prefWidth="94.0" text="Dashboard" />
    </children>
 </AnchorPane>

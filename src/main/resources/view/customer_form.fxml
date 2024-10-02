@@ -102,6 +102,7 @@
                </font>
             </JFXButton>
             <Button fx:id="btnItemForm" layoutX="387.0" layoutY="629.0" mnemonicParsing="false" onAction="#btnOnActionItemForm" text="Item Form" />
+            <Button fx:id="btnDashBoard" layoutX="286.0" layoutY="629.0" mnemonicParsing="false" onAction="#OnActionDashBoardBtn" prefHeight="26.0" prefWidth="82.0" text="Dashboard" />
          </children>
       </AnchorPane>
    </children>

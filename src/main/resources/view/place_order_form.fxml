@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="603.0" prefWidth="998.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.placeholder.PlaceOrderFormController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#192a56" height="116.0" layoutY="-9.0" stroke="BLACK" strokeType="INSIDE" width="998.0" />
+      <Label layoutX="470.0" layoutY="34.0" text="Place Holder Form" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblCart" layoutX="21.0" layoutY="347.0" prefHeight="200.0" prefWidth="965.0" stylesheets="@../css/style.css">
+        <columns>
+          <TableColumn fx:id="colUnitCode" prefWidth="120.79999351501465" text="Unit Code" />
+          <TableColumn fx:id="colDiscription" prefWidth="337.5999450683594" text="Discription" />
+            <TableColumn fx:id="colQuantity" prefWidth="141.60003662109375" text="Quantity " />
+            <TableColumn fx:id="colUnitPrice" prefWidth="159.20001220703125" text="Unit Price " />
+            <TableColumn fx:id="colTotal" prefWidth="207.2000732421875" text="Total" />
+        </columns>
+      </TableView>
+      <Label layoutX="482.0" layoutY="187.0" prefHeight="18.0" prefWidth="53.0" text="City :" />
+      <TextField fx:id="txtCity" layoutX="560.0" layoutY="181.0" />
+      <Label layoutX="220.0" layoutY="187.0" prefHeight="18.0" prefWidth="54.0" text="Name :" />
+      <TextField fx:id="txtName" layoutX="314.0" layoutY="184.0" />
+      <Label layoutX="727.0" layoutY="184.0" prefHeight="18.0" prefWidth="54.0" text="Salary :" />
+      <TextField fx:id="txtSalary" layoutX="799.0" layoutY="184.0" />
+      <Label layoutX="380.0" layoutY="124.0" prefHeight="22.0" prefWidth="89.0" text="Order Date :">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDate" layoutX="482.0" layoutY="124.0" prefHeight="22.0" prefWidth="90.0" text="2024-05-24">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="650.0" layoutY="124.0" prefHeight="22.0" prefWidth="90.0" text="Order Time :">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTime" layoutX="754.0" layoutY="124.0" prefHeight="22.0" prefWidth="90.0" text="08:10:20">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="124.0" prefHeight="18.0" prefWidth="65.0" text="Order ID :">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtOrderId" layoutX="135.0" layoutY="119.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="comBoxcustId" layoutX="120.0" layoutY="181.0" prefHeight="26.0" prefWidth="90.0" />
+      <Label layoutX="21.0" layoutY="184.0" prefHeight="18.0" prefWidth="79.0" text="Customer ID :" />
+      <ComboBox fx:id="comBoxItemCode" layoutX="120.0" layoutY="229.0" prefHeight="26.0" prefWidth="90.0" />
+      <Label layoutX="21.0" layoutY="232.0" prefHeight="18.0" prefWidth="79.0" text="Item Code :" />
+      <Label layoutX="482.0" layoutY="235.0" prefHeight="18.0" prefWidth="66.0" text="Unit Price :" />
+      <TextField fx:id="txtUnitPrice" layoutX="560.0" layoutY="229.0" />
+      <Label layoutX="220.0" layoutY="235.0" prefHeight="18.0" prefWidth="102.0" text="Item Discription" />
+      <TextField fx:id="txtItemDiscription" layoutX="314.0" layoutY="232.0" />
+      <Label layoutX="730.0" layoutY="235.0" prefHeight="18.0" prefWidth="54.0" text="Stock :" />
+      <TextField fx:id="txtStock" layoutX="799.0" layoutY="232.0" />
+      <Label layoutX="547.0" layoutY="295.0" prefHeight="18.0" prefWidth="79.0" text="Quantity :" />
+      <TextField fx:id="txtQty" layoutX="638.0" layoutY="289.0" />
+      <Button fx:id="btnAddToCart" layoutX="869.0" layoutY="289.0" mnemonicParsing="false" onAction="#OnActionAddToCart" style="-fx-background-color: #e1b12c;" text="Add To Cart" />
+      <Button fx:id="btnPlaceOrder" layoutX="878.0" layoutY="557.0" mnemonicParsing="false" onAction="#OnActionPlaceOrder" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #4cd137;" text="Place Order" />
+      <Label layoutX="21.0" layoutY="562.0" prefHeight="18.0" prefWidth="90.0" text="Net Total :" textFill="#e84118">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblNetTotal" layoutX="100.0" layoutY="562.0" prefHeight="22.0" prefWidth="128.0" text="00.00" textFill="#e84118">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Separator layoutX="42.0" layoutY="161.0" prefHeight="3.0" prefWidth="913.0" />
+      <Separator layoutX="352.0" layoutY="111.0" orientation="VERTICAL" prefHeight="46.0" prefWidth="7.0" />
+      <Separator layoutX="600.0" layoutY="112.0" orientation="VERTICAL" prefHeight="46.0" prefWidth="7.0" />
+      <Separator layoutX="851.0" layoutY="111.0" orientation="VERTICAL" prefHeight="46.0" prefWidth="7.0" />
+   </children>
+</AnchorPane>
