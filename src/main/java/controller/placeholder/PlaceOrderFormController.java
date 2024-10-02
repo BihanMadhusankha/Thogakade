@@ -181,6 +181,7 @@ public class PlaceOrderFormController implements Initializable {
         txtName.setText(customer.getName());
         txtCity.setText(customer.getCity());
         txtSalary.setText(String.valueOf(customer.getSalary()));
+
     }
 
     private void setValueToItemText(String newValue) {
