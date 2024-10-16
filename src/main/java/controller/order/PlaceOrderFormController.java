@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import model.*;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -120,7 +121,7 @@ public class PlaceOrderFormController implements Initializable {
     }
 
     @FXML
-    void OnActionPlaceOrder(ActionEvent event) {
+    void OnActionPlaceOrder(ActionEvent event) throws SQLException {
         String orderId = txtOrderId.getText();
         String custId = comBoxcustId.getValue();
         LocalDate now = LocalDate.now();
