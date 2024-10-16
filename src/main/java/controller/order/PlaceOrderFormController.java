@@ -2,6 +2,7 @@ package controller.order;
 
 import controller.customer.CustomerController;
 import controller.item.ItemController;
+import db.DBConnection;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,6 +28,7 @@ import java.util.ResourceBundle;
 
 public class PlaceOrderFormController implements Initializable {
 
+    public Button btnCommt;
     @FXML
     private Button btnAddToCart;
 
@@ -205,5 +207,9 @@ public class PlaceOrderFormController implements Initializable {
         txtItemDiscription.setText(item.getDescription());
         txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
         txtStock.setText(String.valueOf(item.getQtyOnHand()));
+    }
+
+    public void btnCommitOnAction(ActionEvent actionEvent) throws SQLException {
+        DBConnection.getInstance().getConnection().commit();
     }
 }

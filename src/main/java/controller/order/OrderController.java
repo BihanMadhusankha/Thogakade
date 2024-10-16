@@ -12,21 +12,29 @@ public class OrderController {
 
     public boolean placeOrder(Order order) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders VALUE(?,?,?)");
-        preparedStatement.setObject(1,order.getOrderId());
-        preparedStatement.setObject(2,order.getLocalDate());
-        preparedStatement.setObject(3,order.getCustId());
-        boolean isOrderAdd = preparedStatement.executeUpdate() > 0;
-        if (isOrderAdd){
-           boolean isOrderDetails = OrderDetailsController.addOrderDetails(order.getOrderDetails());
+        try{
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders VALUE(?,?,?)");
+            preparedStatement.setObject(1,order.getOrderId());
+            preparedStatement.setObject(2,order.getLocalDate());
+            preparedStatement.setObject(3,order.getCustId());
+            boolean isOrderAdd = preparedStatement.executeUpdate() > 0;
+            if (isOrderAdd){
+                boolean isOrderDetails = OrderDetailsController.addOrderDetails(order.getOrderDetails());
 
-           if (isOrderDetails){
-             boolean isUpdateStock = new ItemController().updateStock(order.getOrderDetails());
-             if (isUpdateStock){
-                 return true;
-             }
-           }
+                if (isOrderDetails){
+                    boolean isUpdateStock = new ItemController().updateStock(order.getOrderDetails());
+                    if (isUpdateStock){
+                        connection.commit();
+                        return true;
+                    }
+                }
+            }
+            connection.rollback();
+            return false;
+        }finally {
+            connection.setAutoCommit(true);
         }
-        return false;
+
     }
 }

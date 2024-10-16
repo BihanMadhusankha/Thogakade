@@ -11,7 +11,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="603.0" prefWidth="998.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.order.PlaceOrderFormController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#192a56" height="116.0" layoutY="-9.0" stroke="BLACK" strokeType="INSIDE" width="998.0" />
@@ -93,5 +92,6 @@
       <Separator layoutX="352.0" layoutY="111.0" orientation="VERTICAL" prefHeight="46.0" prefWidth="7.0" />
       <Separator layoutX="600.0" layoutY="112.0" orientation="VERTICAL" prefHeight="46.0" prefWidth="7.0" />
       <Separator layoutX="851.0" layoutY="111.0" orientation="VERTICAL" prefHeight="46.0" prefWidth="7.0" />
+      <Button fx:id="btnCommt" layoutX="727.0" layoutY="558.0" mnemonicParsing="false" onAction="#btnCommitOnAction" text="Commit" />
    </children>
 </AnchorPane>
