@@ -13,7 +13,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.stage.Stage;
 import model.Customer;
-import util.CrudUtil;
+import service.ServiceFactory;
+import service.custom.CustomerService;
+import util.ServiceType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -94,7 +96,7 @@ public class CustomerFormController implements Initializable {
     @FXML
     private TextField txtSalary;
 
-    CustomerService customerService = new CustomerController();
+    CustomerService1 customerService = new CustomerController();
     public CustomerFormController(){}
     @FXML
     void btnOnActionAddCustomer(ActionEvent event) throws SQLException {
@@ -102,9 +104,10 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(txtId.getText(),comBoxTitle.getValue(),txtName.getText(),datrBirthday.getValue(),Double.parseDouble(txtSalary.getText()),
                 txtAddress.getText(),txtCity.getText(),txtProvince.getText(),txtPostalCode.getText());
 
-            boolean isCustomerAdd = customerService.addCustomer(customer);
+        CustomerService service = ServiceFactory.getFactory().getServiceType(ServiceType.CUSTOMER);
+        boolean isCustomerAdd = service.addCustomer(customer);
 
-            if (isCustomerAdd) {
+        if (isCustomerAdd) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer Added :)").show();
                 loadTable();
             }

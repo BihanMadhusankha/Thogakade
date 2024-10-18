@@ -3,7 +3,7 @@ package controller.customer;
 import javafx.collections.ObservableList;
 import model.Customer;
 
-public interface CustomerService {
+public interface CustomerService1 {
     boolean addCustomer(Customer customer);
     boolean updateCustomer(Customer customer);
     Customer searchCustomer(String id);

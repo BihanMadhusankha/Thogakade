@@ -8,25 +8,26 @@ import util.CrudUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CustomerController implements CustomerService{
+public class CustomerController implements CustomerService1 {
 
     @Override
     public boolean addCustomer(Customer customer) throws RuntimeException {
-        try {
-            return CrudUtil.execute("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)",
-                    customer.getId(),
-                    customer.getTitle(),
-                    customer.getName(),
-                    customer.getDob(),
-                    customer.getSalary(),
-                    customer.getAddress(),
-                    customer.getCity(),
-                    customer.getProvince(),
-                    customer.getPostalCode()
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            return CrudUtil.execute("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)",
+//                    customer.getId(),
+//                    customer.getTitle(),
+//                    customer.getName(),
+//                    customer.getDob(),
+//                    customer.getSalary(),
+//                    customer.getAddress(),
+//                    customer.getCity(),
+//                    customer.getProvince(),
+//                    customer.getPostalCode()
+//            );
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+        return false;
     }
 
     @Override
