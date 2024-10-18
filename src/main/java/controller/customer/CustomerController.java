@@ -12,7 +12,7 @@ public class CustomerController implements CustomerService1 {
 
     @Override
     public boolean addCustomer(Customer customer) throws RuntimeException {
-//        try {
+//         try {
 //            return CrudUtil.execute("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)",
 //                    customer.getId(),
 //                    customer.getTitle(),
